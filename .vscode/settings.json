@@ -1,0 +1,11 @@
+{
+	"conventionalCommits.scopes": [
+		"public",
+		"vscode",
+		"components",
+		"app",
+		"db",
+		"server-actions",
+		"store"
+	]
+}

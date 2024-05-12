@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Nunito_Sans } from 'next/font/google';
 import Header from '@/components/header/Header';
 import './globals.scss';
+import Footer from '@/components/footer/Footer';
 
 const font = Nunito_Sans({
 	subsets: ['latin'],
@@ -19,7 +20,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 			<body className={font.className} id='body'>
 				<Header></Header>
 				<div className='wrapper'>{children}</div>
-				<footer></footer>
+				<Footer></Footer>
 			</body>
 		</html>
 	);

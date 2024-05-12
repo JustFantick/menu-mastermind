@@ -1,15 +1,17 @@
-//adapt value function
-@function adaptValue($pcSize, $mbSize) {
-	$addSize: $pcSize - $mbSize;
-	$maxWidth: 1920 - 390;
-	@return calc(#{$mbSize + px} + #{$addSize} * ((100vw - 390px) / #{$maxWidth}));
+#body {
+	--accent-color-primary: rgba(244, 241, 232, 1);
+	--accent-color-secondary: rgba(249, 115, 22, 1);
+	--text-color-primary: rgba(51, 51, 51, 1);
+	--text-color-secondary: rgba(28, 39, 76, 1);
+
+	--border-radius: 8px;
+
+	--container-width: 1280px;
+	--container-padding-horizontal: 20px;
 }
 
-//color vars
-$primaryBgColor: rgb(46, 47, 49);
-$primaryBgColorHover: rgb(57, 58, 60);
-$primaryTextColor: whitesmoke;
-$semiTransparentBgColor: rgb(0, 0, 0, 0.75);
-
-//get UI element params
-$borderRadius: 10px;
+@media (max-width: 768px) {
+	#body {
+		--container-padding-horizontal: 10px;
+	}
+}

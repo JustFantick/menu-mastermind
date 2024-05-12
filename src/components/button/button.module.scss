@@ -1,0 +1,14 @@
+.button {
+	padding: 10px;
+	border-radius: var(--border-radius);
+	background-color: var(--accent-color-secondary);
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	//14-16px
+	font-size: clamp(0.88rem, calc(0.83rem + 0.21vw), 1rem);
+	font-weight: 700;
+	color: #fafaf9;
+}

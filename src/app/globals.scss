@@ -2,6 +2,7 @@
 	box-sizing: border-box;
 	padding: 0;
 	margin: 0;
+	font-family: inherit;
 }
 
 input,
@@ -10,10 +11,18 @@ button {
 	border: none;
 }
 
+ul,
+li {
+	list-style: none;
+}
+
 html,
 body {
 	max-width: 100vw;
 	overflow-x: hidden;
+
+	color: var(--text-color-primary);
+	line-height: 1.3;
 }
 
 a {

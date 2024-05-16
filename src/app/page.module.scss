@@ -1,11 +1,35 @@
-.home {
+.home__section {
 	position: relative;
+	width: 100%;
+	height: calc(100vh - clamp(59px, calc(58.08px + 0.31vw), 62px));
 
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background-color: var(--accent-color-primary);
 }
 
-@media (max-width: px) {
+.sectionBackground {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: -2;
+}
+
+.overlay {
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+	z-index: 0;
+}
+
+@media (max-width: 768px) {
+	.overlay {
+		display: block;
+	}
 }

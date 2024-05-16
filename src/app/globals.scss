@@ -25,7 +25,11 @@ body {
 	line-height: 1.3;
 }
 
-a {
+a,
+p,
+button,
+li,
+input {
 	color: inherit;
 	text-decoration: none;
 }

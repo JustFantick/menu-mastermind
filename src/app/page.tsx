@@ -31,9 +31,14 @@ export default async function Home() {
 		}
 	};
 
-	const randomRecipes = await getRandomRecipes();
-
-	console.log(randomRecipes[0]);
+	//const randomRecipes = await getRandomRecipes();
+	const randomRecipes = [
+		{ id: 1, image: '/slider-img_1.png' },
+		{ id: 2, image: '/slider-img_2.png' },
+		{ id: 3, image: '/recipe-img.png' },
+		{ id: 4, image: '/recipe-img-2.png' },
+		{ id: 5, image: '/recipe-img-3.png' },
+	];
 
 	return (
 		<main className={styles.home}>

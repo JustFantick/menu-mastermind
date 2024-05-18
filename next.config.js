@@ -33,4 +33,13 @@ module.exports = {
 
 		return config;
 	},
+	images: {
+		remotePatterns: [
+			{
+				protocol: 'https',
+				hostname: 'img.spoonacular.com',
+				pathname: '/recipes/**',
+			},
+		],
+	},
 };

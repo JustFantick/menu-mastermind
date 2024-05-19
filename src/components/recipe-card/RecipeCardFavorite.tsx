@@ -20,8 +20,8 @@ const RecipeCardFavorite = ({ recipeId, title, category, time, calories }: Recip
 			<div className={s.recipeCardFavorite__description}>
 				<h4>{title}</h4>
 				<div className={s.recipeCardFavorite__row}>
-					{category.map(text => (
-						<Category text={text} />
+					{category.map((text, id) => (
+						<Category text={text} key={id} />
 					))}
 				</div>
 

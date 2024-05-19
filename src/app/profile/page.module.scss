@@ -1,0 +1,193 @@
+.profilePage {
+	width: 100%;
+	padding: clamp(25px, calc(16px + 2.21vw), 45px) 0;
+
+	&__container {
+		max-width: 930px;
+		padding: 0 15px;
+		margin: 0 auto;
+
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-start;
+		gap: 15px;
+	}
+}
+
+.tabs {
+	flex: 0 1 200px;
+	padding: 30px 25px;
+	background-color: var(--accent-color-primary);
+	border-radius: 16px;
+
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-template-rows: auto;
+	gap: 15px;
+
+	&__link {
+		width: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: flex-start;
+		gap: 10px;
+		position: relative;
+
+		&::after {
+			content: '';
+			position: absolute;
+			top: 50%;
+			right: 0;
+			transform: translate(-50%, -50%);
+			opacity: 0;
+
+			height: calc(100% + 10px);
+			width: 3px;
+			border-radius: 3px;
+			background-color: var(--accent-color-secondary);
+		}
+
+		&:active::after {
+			opacity: 1;
+		}
+
+		img {
+			max-height: 20px;
+			object-fit: contain;
+		}
+
+		p {
+			color: var(--text-color-primary);
+			font-size: 1.3rem;
+			font-weight: 400;
+			line-height: 130%;
+		}
+	}
+}
+
+.tabContentContainer {
+	flex: 1 1 auto;
+	border-radius: 16px;
+	background-color: var(--accent-color-primary);
+	padding: 25px;
+
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+
+	&__tab {
+		display: none;
+		flex-direction: column;
+		gap: 15px;
+
+		&:target {
+			display: flex;
+		}
+	}
+}
+
+.profileBlock {
+	display: flex;
+	flex-direction: column;
+	gap: 25px;
+	justify-content: flex-start;
+
+	&__title {
+		//18?-28px
+		font-size: 1.75rem;
+		font-weight: 400;
+		line-height: 130%;
+	}
+
+	&__fields {
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		gap: 15px;
+	}
+
+	@media (min-width: 500px) {
+		button {
+			align-self: flex-start;
+			width: 100px;
+		}
+	}
+}
+
+.input {
+	p {
+		margin-bottom: 5px;
+		font-size: 0.75rem;
+		font-weight: 400;
+		line-height: 130%;
+	}
+
+	input {
+		padding: 15px;
+		padding-left: 25px;
+		width: clamp(10px, 446px, calc(100vw - 60px));
+		border-radius: 4px;
+		border: 1px solid var(--text-color-primary);
+
+		@media (max-width: 500px) {
+			padding: 10px;
+			padding-left: 15px;
+		}
+
+		font-size: 1rem;
+		font-weight: 400;
+		line-height: 130%;
+	}
+}
+
+.changePassword {
+	font-size: 1rem;
+	font-weight: 600;
+	line-height: 130%;
+	text-decoration-line: underline;
+}
+
+@media (max-width: 768px) {
+	.profilePage__container {
+		flex-direction: column;
+	}
+
+	.tabContentContainer {
+		width: 100%;
+
+		@media (max-width: 500px) {
+			padding-left: 15px;
+			padding-right: 15px;
+		}
+	}
+
+	.tabs {
+		flex: 0 0 auto;
+		width: 100%;
+		display: flex;
+		justify-content: space-between;
+		padding-top: 15px;
+		padding-bottom: 15px;
+
+		&__link {
+			justify-content: center;
+
+			img {
+				max-height: 18px;
+			}
+
+			p {
+				font-size: 1.125rem;
+			}
+
+			&::after {
+				top: calc(100% + 15px);
+				left: 50%;
+
+				width: 100%;
+				height: 3px;
+				transform: translate(-50%, -100%);
+			}
+		}
+	}
+}

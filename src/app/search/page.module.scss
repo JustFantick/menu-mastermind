@@ -1,0 +1,23 @@
+.searchPage {
+	width: 100%;
+	padding: clamp(25px, calc(16px + 2.21vw), 45px) 0;
+}
+
+.searchPageContainer {
+	max-width: 950px;
+	margin: 0 auto;
+	padding: 0 15px;
+	height: 100%;
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 30px;
+}
+
+.cardsContainer {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	gap: clamp(15px, calc(10.88px + 1.1vw), 25px);
+}

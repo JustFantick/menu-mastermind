@@ -31,6 +31,10 @@
 	}
 
 	&__mainInfo {
+		@media (min-width: 768px) {
+			padding-top: 5px;
+		}
+
 		grid-area: main;
 
 		display: flex;
@@ -129,4 +133,21 @@
 	font-size: 1rem;
 	font-weight: 400;
 	line-height: 130%;
+}
+
+//Reviews
+.reviewsContainer {
+	margin-top: 35px;
+}
+
+.reviewsTitle {
+	margin-bottom: 10px;
+}
+
+.reviewsList {
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+
+	margin-bottom: 25px;
 }

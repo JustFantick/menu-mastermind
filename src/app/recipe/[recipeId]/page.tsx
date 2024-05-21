@@ -3,9 +3,21 @@ import s from './page.module.scss';
 import Image from 'next/image';
 import Param from '@/components/recipe-card/Param';
 import Category from '@/components/recipe-card/Category';
+import Review from '@/components/review/Review';
+import LeaveReviewForm from '@/components/review/LeaveReviewForm';
 
 const RecipePage = ({ params }: { params: { recipeId: number } }) => {
 	//Req on recipeId
+
+	function ratingToString(rating: number) {
+		if (rating === 0) return '☆☆☆☆☆';
+		const roundedRating = Math.round(rating);
+		const filledStars = '★'.repeat(roundedRating);
+		const emptyStars = '☆'.repeat(5 - roundedRating);
+		return filledStars + emptyStars;
+	}
+
+	const stringifyedRating = ratingToString(3.75);
 
 	return (
 		<main className={s.recipePage}>
@@ -26,7 +38,7 @@ const RecipePage = ({ params }: { params: { recipeId: number } }) => {
 						<div className={s.horizontalLine}></div>
 
 						<div className={s.starRating}>
-							<span>★★★★☆</span>
+							<span>{stringifyedRating}</span>
 							<span>(12)</span>
 						</div>
 
@@ -80,6 +92,28 @@ const RecipePage = ({ params }: { params: { recipeId: number } }) => {
 							towel and, holding it in place, blitz until super- smooth.
 						</p>
 					</div>
+				</div>
+
+				<div className={s.reviewsContainer}>
+					<div className={`${s.reviewsTitle} ${s.row}`}>
+						<div className={s.title}>Reviews</div>
+						<div className={s.starRating}>
+							<span>{stringifyedRating}</span>
+							<span>(12)</span>
+						</div>
+					</div>
+
+					<div className={s.reviewsList}>
+						<Review
+							avatarSrc='/avatar.png'
+							author='Sir Kotelok'
+							publishDate='23.01.2024'
+							rating={stringifyedRating}
+							comment='Came out really good. I seasoned my breast prior to fryingso it was really flavorful. Will definitely try this again.'
+						/>
+					</div>
+
+					<LeaveReviewForm />
 				</div>
 			</div>
 		</main>

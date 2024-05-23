@@ -3,6 +3,7 @@ import Image from 'next/image';
 import React, { useRef } from 'react';
 import Input from './Input';
 import s from './form.module.scss';
+import { clear } from 'console';
 
 const SignUpForm = () => {
 	const nameRef = useRef<HTMLInputElement>(null);
@@ -12,10 +13,28 @@ const SignUpForm = () => {
 	return (
 		<form
 			className={s.form}
-			onSubmit={e => {
+			onSubmit={async e => {
 				e.preventDefault();
 
 				console.log(nameRef.current?.value, emailRef.current?.value, passwordRef.current?.value);
+				const response = await fetch('/api/user/', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify({
+						username: nameRef.current?.value,
+						email: emailRef.current?.value,
+						password: passwordRef.current?.value,
+					}),
+				});
+
+				if (response.ok) {
+					const data = await response.json();
+					console.log(data);
+				} else {
+					console.log('failed');
+				}
 			}}
 		>
 			<div className={s.form__title}>Sign up</div>

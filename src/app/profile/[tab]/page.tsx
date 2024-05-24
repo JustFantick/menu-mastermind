@@ -5,6 +5,7 @@ import s from './page.module.scss';
 import RecipeCardFavorite from '@/components/recipe-card/RecipeCardFavorite';
 import Button from '@/components/button/Button';
 import { useRouter } from 'next/navigation';
+import { signOut } from 'next-auth/react';
 
 const tabsList = ['profileData', 'favorites'];
 
@@ -30,7 +31,6 @@ const ProfilePage = ({ params }: { params: { tab: string } }) => {
 			<div className={s.profilePage__container}>
 				<div className={s.tabs}>
 					<a
-						// href='#tab1'
 						className={`${s.tabs__link} ${activeTabIndex === 0 ? s.active : ''}`}
 						onClick={e => {
 							e.preventDefault();
@@ -41,7 +41,6 @@ const ProfilePage = ({ params }: { params: { tab: string } }) => {
 						<p>Profile</p>
 					</a>
 					<a
-						// href='#tab2'
 						className={`${s.tabs__link} ${activeTabIndex === 1 ? s.active : ''}`}
 						onClick={e => {
 							e.preventDefault();
@@ -73,7 +72,16 @@ const ProfilePage = ({ params }: { params: { tab: string } }) => {
 								Change Password
 							</a>
 
-							<Button>Log out</Button>
+							<Button
+								onCLick={() => {
+									signOut({
+										redirect: true,
+										callbackUrl: window.location.origin,
+									});
+								}}
+							>
+								Log out
+							</Button>
 						</div>
 					</div>
 

@@ -1,20 +1,43 @@
 'use client';
 import Image from 'next/image';
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import Input from './Input';
 import s from './form.module.scss';
+import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 const SignInForm = () => {
+	const router = useRouter();
+	const [showServerErrorMsg, setShowServerErrorMsg] = useState<boolean>(false);
+	const [inputsError, setInputsError] = useState<boolean>(false);
+
 	const emailRef = useRef<HTMLInputElement>(null);
 	const passwordRef = useRef<HTMLInputElement>(null);
 
 	return (
 		<form
 			className={s.form}
-			onSubmit={e => {
+			onSubmit={async e => {
 				e.preventDefault();
-
+				setInputsError(false);
 				console.log(emailRef.current?.value, passwordRef.current?.value);
+
+				try {
+					const signInData = await signIn('credentials', {
+						email: emailRef.current?.value,
+						password: passwordRef.current?.value,
+						redirect: false,
+					});
+
+					if (signInData?.error) {
+						console.log(signInData.error);
+						setInputsError(true);
+					} else {
+						router.push('/');
+					}
+				} catch (error) {
+					setShowServerErrorMsg(true);
+				}
 			}}
 		>
 			<div className={s.form__title}>Sign in</div>
@@ -36,9 +59,10 @@ const SignInForm = () => {
 					type='email'
 					name='email'
 					label='Email'
-					pattern='[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,}$'
+					pattern='^[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)*@[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)*$'
 					placeholder='Enter your email'
 					isRequired={true}
+					showError={inputsError}
 				/>
 
 				<Input
@@ -49,11 +73,14 @@ const SignInForm = () => {
 					placeholder='Create Password'
 					pattern='.{6,}'
 					isRequired={true}
+					showError={inputsError}
 				/>
 
 				<button type='submit' className={s.formSubmitButton}>
 					Log in
 				</button>
+
+				{showServerErrorMsg && <p className={s.serverErrorMsg}>Server error occurred, try again later</p>}
 			</div>
 		</form>
 	);

@@ -8,11 +8,12 @@ interface InputProps {
 	pattern?: string;
 	title?: string;
 	isRequired?: boolean;
+	showError?: boolean;
 	placeholder?: string;
 }
 
 const Input = forwardRef(function Input(
-	{ label = '', type, name, pattern, title = '', isRequired = true, placeholder = '' }: InputProps,
+	{ label = '', type, name, pattern, title = '', isRequired = true, placeholder = '', showError = false }: InputProps,
 	ref: Ref<HTMLInputElement>
 ) {
 	return (
@@ -20,7 +21,7 @@ const Input = forwardRef(function Input(
 			<div className={styles.inputWrapper__label}>{label}</div>
 
 			<input
-				className={styles.inputWrapper__input}
+				className={`${styles.inputWrapper__input} ${showError && styles.error}`}
 				ref={ref}
 				type={type}
 				name={name}

@@ -15,8 +15,6 @@ export type Recipe = {
 	calories: number;
 	servings: number;
 	readyInMinutes: number;
-	preparationMinutes: number;
-	cookingMinutes: number;
 };
 
 const SearchPage = async ({ searchParams }: SearchPageProps) => {
@@ -28,28 +26,22 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
 			const response = await axios.get('https://api.spoonacular.com/recipes/complexSearch', {
 				params: {
 					query,
-					number: 2,
+					number: 12,
 					apiKey: process.env.SPOONACULAR_API_KEY,
 					addRecipeInformation: true,
-					addRecipeNutrition: true, // Доданий параметр для отримання інформації про харчування
+					addRecipeNutrition: true,
 				},
 			});
-
-			console.log(response.data.results[0]);
 
 			const recipes = response.data.results.map((recipe: any) => ({
 				id: recipe.id,
 				title: recipe.title,
 				image: recipe.image,
 				readyInMinutes: recipe.readyInMinutes,
-				preparationMinutes: recipe.preparationMinutes,
-				cookingMinutes: recipe.cookingMinutes,
 				servings: recipe.servings,
-				calories: recipe.nutrition?.nutrients.find((nutrient: any) => nutrient.name === 'Calories')?.amount || 0,
+				calories:
+					Math.round(recipe.nutrition?.nutrients.find((nutrient: any) => nutrient.name === 'Calories')?.amount) || 0,
 			}));
-
-			console.log(recipes);
-
 			return recipes;
 		} catch (error) {
 			console.error('Error searching for recipes:', error);
@@ -57,10 +49,7 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
 		}
 	};
 
-	if (query) {
-		recipesArr = await searchRecipes(query);
-		//console.log(recipesArr);
-	}
+	if (query) recipesArr = await searchRecipes(query);
 
 	return (
 		<main className={s.searchPage}>
@@ -76,7 +65,6 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
 							image={recipe.image}
 							numberInMinutes={recipe.readyInMinutes}
 							calories={recipe.calories}
-							servings={recipe.servings}
 						/>
 					))}
 				</div>

@@ -39,6 +39,7 @@ model Reviews {
   date      DateTime @default(now())
   text      String
   rating    Int
+  recipeId  Int
 
   user      Users    @relation(fields: [userId], references: [id])
   

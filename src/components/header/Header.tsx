@@ -8,7 +8,6 @@ import { authOptions } from '@/lib/auth';
 
 const Header = async () => {
 	const session = await getServerSession(authOptions);
-	console.log(session);
 
 	const SignInButton = (
 		<Link href={'/sign-in'} className={styles.nav__link}>
@@ -41,6 +40,7 @@ const Header = async () => {
 					<Link href={'/articles'} className={styles.nav__link}>
 						Articles
 					</Link>
+
 					{!session?.user && (
 						<Link href={'/sign-up'} className={styles.nav__link}>
 							Sign up

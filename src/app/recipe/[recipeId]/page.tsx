@@ -5,6 +5,9 @@ import axios from 'axios';
 import Category from '@/components/recipe-card/Category';
 import Review from '@/components/review/Review';
 import LeaveReviewForm from '@/components/review/LeaveReviewForm';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
+import prisma from '@/lib/db';
 
 type Ingredient = {
 	name: string;
@@ -29,6 +32,15 @@ type Recipe = {
 	instructions: string;
 };
 
+interface Review {
+	id: number;
+	userId: number;
+	date: Date;
+	text: string;
+	rating: number;
+	recipeId: number;
+}
+
 const categoriesKeysToCheck = [
 	'vegetarian',
 	'vegan',
@@ -42,6 +54,8 @@ const categoriesKeysToCheck = [
 ];
 
 const RecipePage = async ({ params }: { params: { recipeId: number } }) => {
+	const session = await getServerSession(authOptions);
+
 	const recipeId = params.recipeId;
 
 	const getRecipeById = async (id: number): Promise<Recipe> => {
@@ -54,16 +68,12 @@ const RecipePage = async ({ params }: { params: { recipeId: number } }) => {
 
 			const data = response.data;
 
-			console.log(data);
-			const categories = Object.keys(data).filter(key => data[key] === true);
-
 			const ingredients: Ingredient[] = data.extendedIngredients.map((ingredient: any) => ({
 				name: ingredient.originalName,
 				amount: ingredient.amount,
 				unit: ingredient.unit,
 			}));
 
-			console.log(data.analyzedInstructions[0]?.steps);
 			const instructions: string = data.analyzedInstructions[0]?.steps.map((step: any) => step.step).join(' ') || '';
 
 			const recipe: Recipe = {
@@ -88,6 +98,28 @@ const RecipePage = async ({ params }: { params: { recipeId: number } }) => {
 	const recipeInfo = await getRecipeById(recipeId);
 	// console.log(recipeInfo);
 
+	async function getReviewsFromBD() {
+		const reviews = await prisma.reviews.findMany({
+			include: {
+				user: {
+					select: {
+						username: true,
+					},
+				},
+			},
+		});
+
+		return reviews.map(review => ({
+			id: review.id,
+			userId: review.userId,
+			date: review.date,
+			text: review.text,
+			rating: review.rating,
+			recipeId: review.recipeId,
+			username: review.user.username,
+		}));
+	}
+
 	function ratingToString(rating: number) {
 		if (rating === 0) return '☆☆☆☆☆';
 		const roundedRating = Math.round(rating);
@@ -95,7 +127,37 @@ const RecipePage = async ({ params }: { params: { recipeId: number } }) => {
 		const emptyStars = '☆'.repeat(5 - roundedRating);
 		return filledStars + emptyStars;
 	}
-	const stringifyedRating = ratingToString(3.75);
+
+	const reviews = await getReviewsFromBD();
+
+	function getAverageRating(reviews: Review[]): number {
+		if (reviews.length === 0) return 0;
+
+		const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
+		const averageRating = totalRating / reviews.length;
+
+		return averageRating;
+	}
+
+	let stringifyedRating: string;
+
+	if (reviews.length > 0) {
+		const averageRating = getAverageRating(reviews);
+		stringifyedRating = ratingToString(averageRating);
+	} else {
+		stringifyedRating = '☆☆☆☆☆';
+	}
+
+	const reviewsNumber = reviews.length;
+
+	function formatDate(dateString: Date) {
+		const date = new Date(dateString);
+		return new Intl.DateTimeFormat('en-GB', {
+			day: '2-digit',
+			month: '2-digit',
+			year: 'numeric',
+		}).format(date);
+	}
 
 	return (
 		<main className={s.recipePage}>
@@ -118,7 +180,7 @@ const RecipePage = async ({ params }: { params: { recipeId: number } }) => {
 
 						<div className={s.starRating}>
 							<span>{stringifyedRating}</span>
-							<span>(12)</span>
+							<span>({reviewsNumber})</span>
 						</div>
 
 						<div className={s.horizontalLine}></div>
@@ -161,21 +223,23 @@ const RecipePage = async ({ params }: { params: { recipeId: number } }) => {
 						<div className={s.title}>Reviews</div>
 						<div className={s.starRating}>
 							<span>{stringifyedRating}</span>
-							<span>(12)</span>
+							<span>({reviewsNumber})</span>
 						</div>
 					</div>
 
 					<div className={s.reviewsList}>
-						<Review
-							avatarSrc='/avatar.png'
-							author='Sir Kotelok'
-							publishDate='23.01.2024'
-							rating={stringifyedRating}
-							comment='Came out really good. I seasoned my breast prior to fryingso it was really flavorful. Will definitely try this again.'
-						/>
+						{reviews.map(review => (
+							<Review
+								avatarSrc='/profile.svg'
+								author={review.username}
+								publishDate={formatDate(review.date)}
+								rating={ratingToString(review.rating)}
+								comment={review.text}
+							/>
+						))}
 					</div>
 
-					<LeaveReviewForm />
+					{session?.user && <LeaveReviewForm username={session.user.username} recipeId={recipeId} />}
 				</div>
 			</div>
 		</main>

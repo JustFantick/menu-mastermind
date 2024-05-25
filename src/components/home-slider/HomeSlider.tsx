@@ -10,10 +10,7 @@ import { Navigation, Autoplay } from 'swiper/modules';
 import { Swiper as SwiperType } from 'swiper';
 
 import 'swiper/css';
-import './customSwiper.scss';
-//import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-// import './homeSlider.module.scss';
 
 interface HomeSliderProps {
 	recipes: Recipe[];
@@ -51,8 +48,8 @@ const HomeSlider = ({ recipes }: HomeSliderProps) => {
 					swiperRef.current = swiper;
 				}}
 			>
-				{recipes.map(recipe => (
-					<SwiperSlide className={styles.slide}>
+				{recipes.map((recipe, id) => (
+					<SwiperSlide className={styles.slide} key={id}>
 						<Image src={recipe.image} alt={`Recipe ${recipe.id}`} width={350} height={350} />
 					</SwiperSlide>
 				))}

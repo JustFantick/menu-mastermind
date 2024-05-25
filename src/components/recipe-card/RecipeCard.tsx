@@ -8,20 +8,22 @@ interface RecipeCardProps {
 	href: string;
 	title: string;
 	image: string;
-	time: string;
-	calories: string;
+	numberInMinutes: number;
+	calories: number;
+	servings: number;
 }
 
-const RecipeCard = ({ href, title, image, time, calories }: RecipeCardProps) => {
+const RecipeCard = ({ href, title, image, numberInMinutes, calories, servings }: RecipeCardProps) => {
 	return (
 		<Link href={href} className={s.recipeCard}>
-			<Image src={'/recipe-img.png'} height={196} width={270} alt='recipe-img' className={s.recipeCard__img} />
+			<Image src={image} height={196} width={270} alt='recipe-img' className={s.recipeCard__img} />
 
 			<div className={s.recipeCard__textContent}>
-				<div className={s.recipeCard__title}>Pasta with Garlic, Scallions, Cauliflower & Breadcrumbs</div>
+				<div className={s.recipeCard__title}>{title}</div>
 				<div className={s.recipeCardParams}>
-					<Param imgSrc='/clock.svg' text='1h 5min' />
-					<Param imgSrc='/calories.svg' text='300 Calories' />
+					<Param imgSrc='/clock.svg' text={`minutes: ${numberInMinutes}`} />
+					<Param imgSrc='/calories.svg' text={`calories: ${calories}`} />
+					<Param imgSrc='/calories.svg' text={`Servings: ${servings}`} />
 				</div>
 			</div>
 		</Link>

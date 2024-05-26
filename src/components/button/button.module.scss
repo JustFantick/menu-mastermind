@@ -12,3 +12,17 @@
 	font-weight: 700;
 	color: #fafaf9;
 }
+
+.favoriteIcon {
+	height: 28px;
+	width: 28px;
+	fill: white;
+
+	path {
+		stroke: var(--accent-color-secondary);
+	}
+
+	&[data-isactive='true'] {
+		fill: var(--accent-color-secondary);
+	}
+}

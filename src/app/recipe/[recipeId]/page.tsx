@@ -8,6 +8,7 @@ import LeaveReviewForm from '@/components/review/LeaveReviewForm';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import prisma from '@/lib/db';
+import FavoriteButton from '@/components/button/FavoriteButton';
 
 type Ingredient = {
 	name: string;
@@ -162,6 +163,8 @@ const RecipePage = async ({ params }: { params: { recipeId: number } }) => {
 		}).format(date);
 	}
 
+	function onFavoriteIconClick() {}
+
 	return (
 		<main className={s.recipePage}>
 			<div className={s.recipePage__container}>
@@ -171,7 +174,13 @@ const RecipePage = async ({ params }: { params: { recipeId: number } }) => {
 					</div>
 
 					<div className={s.recipe__mainInfo}>
-						<h3 className={s.title}>{recipeInfo.title}</h3>
+						<div className={s.flexSpaceBetween}>
+							<h3 className={s.title}>{recipeInfo.title}</h3>
+
+							{session?.user && (
+								<FavoriteButton recipeId={recipeId} username={session.user.username} defaultIsActive={false} />
+							)}
+						</div>
 
 						<div className={s.row}>
 							{recipeInfo.categories.map((category, id) => (

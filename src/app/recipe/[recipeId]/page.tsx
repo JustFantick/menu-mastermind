@@ -163,7 +163,24 @@ const RecipePage = async ({ params }: { params: { recipeId: number } }) => {
 		}).format(date);
 	}
 
-	function onFavoriteIconClick() {}
+	let FavoriteButtonBlock = null;
+
+	if (session?.user.username) {
+		const user = await prisma.users.findFirst({
+			where: { username: session?.user.username },
+		});
+
+		const favorite = await prisma.favorites.findFirst({
+			where: {
+				userId: user?.id,
+				recipeId: Math.trunc(recipeId),
+			},
+		});
+
+		FavoriteButtonBlock = (
+			<FavoriteButton recipeId={recipeId} username={session.user.username} defaultIsActive={!!favorite} />
+		);
+	}
 
 	return (
 		<main className={s.recipePage}>
@@ -177,9 +194,7 @@ const RecipePage = async ({ params }: { params: { recipeId: number } }) => {
 						<div className={s.flexSpaceBetween}>
 							<h3 className={s.title}>{recipeInfo.title}</h3>
 
-							{session?.user && (
-								<FavoriteButton recipeId={recipeId} username={session.user.username} defaultIsActive={false} />
-							)}
+							{session?.user && FavoriteButtonBlock}
 						</div>
 
 						<div className={s.row}>

@@ -98,8 +98,11 @@ const RecipePage = async ({ params }: { params: { recipeId: number } }) => {
 	const recipeInfo = await getRecipeById(recipeId);
 	// console.log(recipeInfo);
 
-	async function getReviewsFromBD() {
+	async function getReviewsFromBD(recipeId: number) {
 		const reviews = await prisma.reviews.findMany({
+			where: {
+				recipeId: recipeId,
+			},
 			include: {
 				user: {
 					select: {
@@ -128,7 +131,7 @@ const RecipePage = async ({ params }: { params: { recipeId: number } }) => {
 		return filledStars + emptyStars;
 	}
 
-	const reviews = await getReviewsFromBD();
+	const reviews = await getReviewsFromBD(Math.trunc(recipeId));
 
 	function getAverageRating(reviews: Review[]): number {
 		if (reviews.length === 0) return 0;

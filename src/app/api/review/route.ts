@@ -27,7 +27,7 @@ export async function POST(req: Request, res: Response) {
 			},
 		});
 
-		revalidatePath('/recipe');
+		revalidatePath(`/recipe/${recipeId}`);
 
 		return NextResponse.json(review, { status: 201 });
 	} catch (error) {

@@ -6,17 +6,18 @@ import Param from './Param';
 import Link from 'next/link';
 
 interface RecipeCardFavoriteProps {
-	recipeId: string;
+	recipeId: number;
 	title: string;
+	imageUrl: string;
 	category: string[];
 	time: string;
 	calories: string;
 }
 
-const RecipeCardFavorite = ({ recipeId, title, category, time, calories }: RecipeCardFavoriteProps) => {
+const RecipeCardFavorite = ({ recipeId, imageUrl, title, category, time, calories }: RecipeCardFavoriteProps) => {
 	return (
-		<Link href={'./profile'} id={recipeId} className={s.recipeCardFavorite}>
-			<Image src='/recipe-img.png' height={100} width={135} alt='recipe-img' />
+		<Link href={`./recipe/${recipeId}`} className={s.recipeCardFavorite}>
+			<Image src={imageUrl} height={100} width={135} alt='recipe-img' />
 			<div className={s.recipeCardFavorite__description}>
 				<h4>{title}</h4>
 				<div className={s.recipeCardFavorite__row}>
